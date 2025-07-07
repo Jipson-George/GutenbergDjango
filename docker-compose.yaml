@@ -17,7 +17,7 @@ services:
 
   web:
     build: .
-    command: ./entry-point.sh
+    command: bash entry-point.sh
     volumes:
       - .:/code
     ports:

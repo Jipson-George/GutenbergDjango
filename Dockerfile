@@ -14,3 +14,4 @@ COPY . /code
 
 COPY entry-point.sh /code/entry-point.sh
 RUN chmod +x /code/entry-point.sh
+
