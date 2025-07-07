@@ -29,13 +29,13 @@ python manage.py migrate --noinput
 
 # Load seed data
 echo "Seeding data from custom management command..."
-python manage.py load_seed_data
+# python manage.py load_seed_data
 
-# OR use raw SQL only once
-# if [ ! -f .seeded ]; then
-#   echo "Seeding database from init.sql..."
-#   PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -d $POSTGRES_DB -f init.sql && touch .seeded
-# fi
+OR use raw SQL only once
+if [ ! -f .seeded ]; then
+  echo "Seeding database from init.sql..."
+  PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -d $POSTGRES_DB -f init.sql && touch .seeded
+fi
 
 # Start Gunicorn
 echo "Starting Gunicorn..."
