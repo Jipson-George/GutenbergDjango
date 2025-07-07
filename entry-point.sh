@@ -19,7 +19,8 @@ echo "PostgreSQL is up."
 python manage.py makemigrations
 # Continue your tasks...
 python manage.py migrate
-
+echo "Loading seed data from init.sql..."
+python manage.py load_seed_data
 if [ ! -f books/models.py ]; then
   echo "Generating models with inspectdb..."
   python manage.py inspectdb > book/models.py
