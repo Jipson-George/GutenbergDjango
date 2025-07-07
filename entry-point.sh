@@ -16,6 +16,7 @@ done
 
 echo "PostgreSQL is up."
 
+python manage.py makemigrations
 # Continue your tasks...
 python manage.py migrate
 
