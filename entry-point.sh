@@ -36,6 +36,8 @@ if [ ! -f .seeded ]; then
   echo "Seeding database from init.sql..."
   PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -d $POSTGRES_DB -f init.sql && touch .seeded
 fi
+python manage.py collectstatic --noinput
+
 
 # Start Gunicorn
 echo "Starting Gunicorn..."
