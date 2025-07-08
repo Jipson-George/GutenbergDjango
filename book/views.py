@@ -10,9 +10,13 @@ from .models import BooksBook
 from .serializers import BookSerializer
 
 class BookListView(APIView):
-
     def get(self, request):
-        books = BooksBook.objects.all()
+        # Filter out books with no gutenberg_id or download_count
+        books = BooksBook.objects.filter(
+            gutenberg_id__isnull=False,
+            download_count__isnull=False,
+            download_count__gt=0  # Also exclude books with 0 downloads
+        ).exclude(gutenberg_id='')
 
         # Filter by Gutenberg IDs
         ids = request.GET.get('ids')
@@ -60,6 +64,9 @@ class BookListView(APIView):
                 title_q |= Q(title__icontains=t)
             books = books.filter(title_q)
 
+        # Filter out NULL download_count before ordering
+        books = books.filter(download_count__isnull=False)
+        
         # Order by popularity (downloads) and make distinct
         books = books.order_by('-download_count').distinct()
         
