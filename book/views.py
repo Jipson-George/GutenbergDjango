@@ -1,27 +1,20 @@
-from django.shortcuts import render
-
-# Create your views here.
-# views.py
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.pagination import PageNumberPagination
-from django.db.models import Q
-from .models import BooksBook, BooksBookAuthors, BooksBookBookshelves, BooksBookLanguages, BooksBookSubjects, BooksFormat
-from .serializers import BookSerializer
-
 from django.db.models import Q, Prefetch
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
+
+from book.models import BooksFormat, BooksBook, BooksBookAuthors, BooksBookBookshelves, BooksBookLanguages, BooksBookSubjects
+from book.serializers import BookSerializer   
 
 class BookListView(APIView):
     def get(self, request):
         # Start with base queryset with essential filters
         books = BooksBook.objects.filter(
             gutenberg_id__isnull=False,
+            gutenberg_id__gt=0,  # Only positive gutenberg_ids
             download_count__isnull=False,
             download_count__gt=0
-        ).exclude(gutenberg_id='')
+        )
         
         # Apply filters efficiently
         books = self._apply_filters(books, request)
